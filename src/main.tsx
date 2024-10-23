@@ -13,6 +13,7 @@ import { MatchesPage } from './pages/MatchesPage'
 import { SkinsPage } from './pages/SkinsPage'
 import { CasePage } from './pages/CasePage'
 import { PromoPage } from './pages/PromoPage'
+import { StatisticsPage } from './pages/StatisticsPage'
 
 const router = createBrowserRouter([
 	{ path: '/', element: <LoginPage /> },
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
 			},
 			{ path: '/main/skins', element: <SkinsPage /> },
 			{ path: '/main/cases', element: <CasePage /> },
+			{ path: '/main/statistics', element: <StatisticsPage /> },
 			{ path: '/main/promo', element: <PromoPage /> }
 		]
 	}

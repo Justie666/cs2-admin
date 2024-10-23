@@ -25,6 +25,10 @@ const LINKS: { title: string; href: string }[] = [
 	{
 		href: '/main/cases',
 		title: 'Кейсы'
+	},
+	{
+		href: '/main/statistics',
+		title: 'Статистика'
 	}
 ]
 

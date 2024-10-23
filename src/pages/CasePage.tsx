@@ -4,6 +4,7 @@ import {
 	useGetCases,
 	useRemoveSkin
 } from '@/api/hooks/caseHooks'
+import { AddSkin } from '@/components/case/AddSkin'
 import { CreateCase } from '@/components/case/CreateCase'
 import { EditCase } from '@/components/case/EditCase'
 import {
@@ -117,8 +118,8 @@ export const CasePage = () => {
 													})
 												}
 											/>
-											%
 										</div>
+
 										<Button
 											size={'icon'}
 											variant={'outline'}
@@ -127,6 +128,7 @@ export const CasePage = () => {
 										</Button>
 									</div>
 								))}
+								<AddSkin case_id={caseItem.id} />
 							</TableCell>
 							<TableCell>
 								<div className='flex gap-2 items-center'>

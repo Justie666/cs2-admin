@@ -236,6 +236,7 @@ export const SkinsPage = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
+							<TableHead>Id</TableHead>
 							<TableHead>Название</TableHead>
 							<TableHead>Картинка</TableHead>
 							<TableHead>Информация</TableHead>
@@ -245,6 +246,7 @@ export const SkinsPage = () => {
 					<TableBody>
 						{skins.map(skin => (
 							<TableRow key={skin.id}>
+								<TableCell className='font-medium'>{skin.id}</TableCell>
 								<TableCell className='font-medium'>{skin.name}</TableCell>
 								<TableCell className='font-medium'>
 									<img

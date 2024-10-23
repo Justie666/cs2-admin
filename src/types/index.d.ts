@@ -197,3 +197,238 @@ interface UpdatePromoData {
 	value: number
 	count: number
 }
+
+interface IDay {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface IMonth {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface IUsers {
+	day: IDay
+	month: IMonth
+	all: number
+}
+
+interface IDay {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface IMonth {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface IBets {
+	day: IDay
+	month: IMonth
+	all: number
+}
+
+interface IDay {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface IMonth {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface ICases {
+	day: IDay
+	month: IMonth
+	all: number
+}
+
+interface IDay {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface IMonth {
+	value: number
+	last_value: number
+	percent: number
+}
+
+interface ISkins {
+	day: IDay
+	month: IMonth
+	all: number
+}
+
+interface IStatistics {
+	users: IUsers
+	bets: IBets
+	cases: ICases
+	skins: ISkins
+}
+
+type IUsersStat = {
+	id: string
+	name: string
+	username: string
+	referrer_id: string
+	time_zone: number
+	photo_url: string
+	trade_url: string
+	use_ref_bonus: boolean
+	count_clip: number
+	balance_coin: number
+	balance_usdt: number
+	balance_referrers: number
+	last_open_case: string
+	created_at: string
+}
+
+interface IStatistics1 {
+	total_bets: number
+	total_skins: number
+	total_referrals: number
+	total_opened_cases: number
+	total_days_on_platform: number
+}
+
+interface ISkins1 {
+	name: string
+	price: number
+	gun_id: number
+	quality: string
+	rarity: string
+	image_url: string
+	id: number
+}
+
+interface ITeam1 {
+	name: string
+	logo_url: string
+	id: number
+}
+
+interface ITeams1 {
+	id: number
+	score: number
+	total_coin: number
+	total_usdt: number
+	team: ITeam1
+}
+
+interface IEvent1 {
+	id: number
+	date_start: string
+	status: boolean
+	created_at: string
+	won: number
+	won_first_map: number
+	won_second_map: number
+	dry_bill: boolean
+	knife: boolean
+	teams: ITeams1[]
+}
+
+interface IBets {
+	id: number
+	event_team_id: number
+	bet_type: string
+	bet: boolean
+	currency: string
+	amount: number
+	active: boolean
+	event: IEvent1
+}
+
+interface ISkin {
+	name: string
+	price: number
+	gun_id: number
+	quality: string
+	rarity: string
+	image_url: string
+	id: number
+}
+
+interface ICase {
+	id: number
+	name: string
+	photo_url: string
+	type_price: string
+	price: number
+}
+
+interface ICaseSkin {
+	id: number
+	chance: number
+	skin: ISkin1
+	case: ICase1
+}
+
+interface ICases {
+	id: number
+	created_at: string
+	case_skin: ICaseSkin1
+}
+
+interface IMoneys {
+	id: number
+	amount: number
+	created_at: string
+}
+
+interface ISkin {
+	name: string
+	price: number
+	gun_id: number
+	quality: string
+	rarity: string
+	image_url: string
+	id: number
+}
+
+interface IReceivingSkin {
+	id: number
+	status: string
+	created_at: string
+	skin: ISkin1
+}
+
+interface IReferrals {
+	id: number
+	photo_url: string
+}
+
+interface IFullInfo {
+	id: string
+	name: string
+	username: string
+	referrer_id: string
+	time_zone: number
+	photo_url: string
+	trade_url: string
+	use_ref_bonus: boolean
+	count_clip: number
+	balance_coin: number
+	balance_usdt: number
+	balance_referrers: number
+	last_open_case: string
+	created_at: string
+	statistics: IStatistics1
+	skins: ISkins1[]
+	bets: IBets1[]
+	cases: ICases1[]
+	moneys: IMoneys1[]
+	receiving_skin: IReceivingSkin1[]
+	referrals: IReferrals1[]
+}
