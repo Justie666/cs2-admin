@@ -17,45 +17,38 @@ import {
 	DialogContent,
 	DialogTitle
 } from '../ui'
-import { useCreateTeam } from '@/api/hooks/teamHooks'
-import { toast } from 'sonner'
-import { uploadFileToS3 } from '@/api/uploadFileToS3'
+import { useCreateGun } from '@/api/hooks/gunHooks'
 
 const formSchema = z.object({
 	name: z.string({ message: 'Это поле обязательно' }).min(1, {
 		message: 'Это поле обязательно'
 	}),
-	logo: z.any().refine(file => file instanceof File, {
-		message: 'Выберите изображение'
-	})
+	parent_id: z.number().nullable()
 })
 
-export const CreateTeam = () => {
+export const CreateGun = ({ parent_id }: { parent_id: number | null }) => {
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema)
-	})
-	const { mutate, isPending } = useCreateTeam()
-
-	async function onSubmit(data: z.infer<typeof formSchema>) {
-		console.log(data)
-
-		try {
-			const logo_url = await uploadFileToS3(data.logo)
-
-			mutate({ ...data, logo_url })
-		} catch {
-			toast.error('Произошла ошибка при создании команды')
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			parent_id
 		}
+	})
+	const { mutate, isPending } = useCreateGun()
+
+	function onSubmit(data: z.infer<typeof formSchema>) {
+		mutate({ ...data, parent_id: parent_id ? parent_id : null })
 	}
 
 	return (
 		<Dialog>
 			<DialogTrigger>
-				<Button variant={'outline'}>Создать</Button>
+				<Button size={'sm'} variant={'outline'} className='mt-3'>
+					Создать
+				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Создание команды</DialogTitle>
+					<DialogTitle>Создать оружие</DialogTitle>
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
@@ -72,26 +65,9 @@ export const CreateTeam = () => {
 								</FormItem>
 							)}
 						/>
-						<FormField
-							control={form.control}
-							name='logo'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Логотип</FormLabel>
-									<FormControl>
-										<Input
-											type='file'
-											accept='image/*'
-											onChange={e => field.onChange(e.target.files?.[0])}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
 						<Button disabled={isPending} className='w-full' type='submit'>
 							<Loading isShow={isPending} />
-							Сохранить
+							Создать
 						</Button>
 					</form>
 				</Form>

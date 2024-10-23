@@ -1,3 +1,5 @@
+import { CreateAdmin } from '@/components/admin/CreateAdmin'
+
 export const AdminsPage = () => {
-	return <div>AdminsPage</div>
+	return <CreateAdmin />
 }

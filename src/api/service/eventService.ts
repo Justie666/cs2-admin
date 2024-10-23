@@ -6,5 +6,9 @@ export const eventService = {
 
 	create: async (data: EventCreateData) => {
 		return (await api.post('/admin/event', data)).data
+	},
+
+	end: async (data: EventEndData) => {
+		return (await api.patch(`/admin/event`, data)).data
 	}
 }

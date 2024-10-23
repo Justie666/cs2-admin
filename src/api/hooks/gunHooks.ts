@@ -1,29 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { categoryService } from '../service/categoryService'
-import { AxiosError } from 'axios'
+import { gunService } from '../service/gunService'
 import { toast } from 'sonner'
+import { AxiosError } from 'axios'
 
-export const useGetCategories = () => {
+export const useGetGuns = () => {
 	return useQuery({
-		queryKey: ['categories'],
-		queryFn: () => categoryService.getCategories()
+		queryKey: ['guns'],
+		queryFn: () => gunService.getAll()
 	})
 }
 
-export const useEditCategory = () => {
+export const useCreateGun = () => {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationFn: (data: {
-			id: number
-			name: string
-			price_one: number
-			price_two: number
-			price_three: number
-			price_four: number
-		}) => categoryService.editCategory(data),
+		mutationFn: (data: GunCreateData) => gunService.create(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['categories'] })
+			toast.success('Оружие успешно создано')
+			queryClient.invalidateQueries({ queryKey: ['guns'] })
 		},
 		onError: error => {
 			const axiosError = error as AxiosError<{ detail: string }>
@@ -37,14 +30,13 @@ export const useEditCategory = () => {
 	})
 }
 
-export const useDeleteCategory = () => {
+export const useUpdateGun = () => {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationFn: (params: { id: number }) =>
-			categoryService.deleteCategory(params),
+		mutationFn: (data: GunUpdateData) => gunService.update(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['categories'] })
+			toast.success('Оружие успешно обновлено')
+			queryClient.invalidateQueries({ queryKey: ['guns'] })
 		},
 		onError: error => {
 			const axiosError = error as AxiosError<{ detail: string }>

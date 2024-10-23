@@ -17,45 +17,41 @@ import {
 	DialogContent,
 	DialogTitle
 } from '../ui'
-import { useCreateTeam } from '@/api/hooks/teamHooks'
-import { toast } from 'sonner'
-import { uploadFileToS3 } from '@/api/uploadFileToS3'
+import { useUpdateGun } from '@/api/hooks/gunHooks'
 
 const formSchema = z.object({
 	name: z.string({ message: 'Это поле обязательно' }).min(1, {
 		message: 'Это поле обязательно'
 	}),
-	logo: z.any().refine(file => file instanceof File, {
-		message: 'Выберите изображение'
-	})
+	parent_id: z.number().nullable(),
+	id: z.number()
 })
 
-export const CreateTeam = () => {
+export const UpdateGun = ({ gun }: { gun: Gun }) => {
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema)
-	})
-	const { mutate, isPending } = useCreateTeam()
-
-	async function onSubmit(data: z.infer<typeof formSchema>) {
-		console.log(data)
-
-		try {
-			const logo_url = await uploadFileToS3(data.logo)
-
-			mutate({ ...data, logo_url })
-		} catch {
-			toast.error('Произошла ошибка при создании команды')
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			parent_id: gun.parent_id,
+			name: gun.name,
+			id: gun.id
 		}
+	})
+	const { mutate, isPending } = useUpdateGun()
+
+	function onSubmit(data: z.infer<typeof formSchema>) {
+		mutate(data)
 	}
 
 	return (
 		<Dialog>
 			<DialogTrigger>
-				<Button variant={'outline'}>Создать</Button>
+				<Button size={'sm'} variant={'outline'} className='mt-3'>
+					Изменить
+				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Создание команды</DialogTitle>
+					<DialogTitle>Изменить оружие</DialogTitle>
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
@@ -67,23 +63,6 @@ export const CreateTeam = () => {
 									<FormLabel>Название</FormLabel>
 									<FormControl>
 										<Input placeholder='Название' {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='logo'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Логотип</FormLabel>
-									<FormControl>
-										<Input
-											type='file'
-											accept='image/*'
-											onChange={e => field.onChange(e.target.files?.[0])}
-										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>

@@ -3,22 +3,6 @@ import { Button } from './ui/button'
 
 const LINKS: { title: string; href: string }[] = [
 	{
-		href: '/main/category',
-		title: 'Категории'
-	},
-	{
-		href: '/main/dispute',
-		title: 'Споры'
-	},
-	{
-		href: '/main/finance',
-		title: 'Финансовая статистика'
-	},
-	{
-		href: '/main/statistics',
-		title: 'Статистика'
-	},
-	{
 		href: '/main/admins',
 		title: 'Админы'
 	},
@@ -33,6 +17,14 @@ const LINKS: { title: string; href: string }[] = [
 	{
 		href: '/main/skins',
 		title: 'Скины'
+	},
+	{
+		href: '/main/promo',
+		title: 'Промокоды'
+	},
+	{
+		href: '/main/cases',
+		title: 'Кейсы'
 	}
 ]
 

@@ -1,11 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
-import { authService } from '../service/authService'
-import { AxiosError } from 'axios'
+import { adminService } from '../service/adminService'
 import { toast } from 'sonner'
+import { AxiosError } from 'axios'
 
-export const usePostLogin = () => {
+export const useCreateAdmin = () => {
 	return useMutation({
-		mutationFn: (data: LoginData) => authService.login(data),
+		mutationFn: (data: { user_id: number; level: number }) =>
+			adminService.create(data),
+		onSuccess: () => {
+			toast.success('Админ успешно создан')
+		},
 		onError: error => {
 			const axiosError = error as AxiosError<{ detail: string }>
 			// Проверяем, есть ли response и detail

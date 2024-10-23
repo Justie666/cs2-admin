@@ -1,29 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { categoryService } from '../service/categoryService'
-import { AxiosError } from 'axios'
+import { promoService } from '../service/promoService'
 import { toast } from 'sonner'
+import { AxiosError } from 'axios'
 
-export const useGetCategories = () => {
+export const useGetPromos = () => {
 	return useQuery({
-		queryKey: ['categories'],
-		queryFn: () => categoryService.getCategories()
+		queryKey: ['promos'],
+		queryFn: () => promoService.getAll()
 	})
 }
 
-export const useEditCategory = () => {
+export const useCreatePromo = () => {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationFn: (data: {
-			id: number
-			name: string
-			price_one: number
-			price_two: number
-			price_three: number
-			price_four: number
-		}) => categoryService.editCategory(data),
+		mutationFn: (data: CreatePromoData) => promoService.create(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['categories'] })
+			queryClient.invalidateQueries({ queryKey: ['promos'] })
+			toast.success('Промо успешно создано')
 		},
 		onError: error => {
 			const axiosError = error as AxiosError<{ detail: string }>
@@ -37,14 +30,13 @@ export const useEditCategory = () => {
 	})
 }
 
-export const useDeleteCategory = () => {
+export const useUpdatePromo = () => {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationFn: (params: { id: number }) =>
-			categoryService.deleteCategory(params),
+		mutationFn: (data: UpdatePromoData) => promoService.update(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['categories'] })
+			queryClient.invalidateQueries({ queryKey: ['promos'] })
+			toast.success('Промо успешно обновлено')
 		},
 		onError: error => {
 			const axiosError = error as AxiosError<{ detail: string }>

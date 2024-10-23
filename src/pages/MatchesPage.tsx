@@ -17,6 +17,7 @@ import { useGetEvents } from '@/api/hooks/eventHooks'
 import { formatToUserTimezone } from '@/utils/formatToUserTimezone'
 import { useIntersectionObserver } from '@siberiacancode/reactuse'
 import { CreateMatch } from '@/components/matches/CreateMatch'
+import { EndMatch } from '@/components/matches/EndMatch'
 
 const LIMIT = 25
 
@@ -47,7 +48,6 @@ export const MatchesPage = () => {
 		setOffset(offset + LIMIT)
 	}
 
-	// При загрузке компонента, извлекаем выбранную вкладку из localStorage
 	useEffect(() => {
 		const savedTab = localStorage.getItem('selectedTabMatches')
 		if (savedTab) {
@@ -55,7 +55,6 @@ export const MatchesPage = () => {
 		}
 	}, [])
 
-	// Обновляем localStorage при изменении вкладки
 	const handleTabChange = (value: string) => {
 		setSelectedTab(value)
 		localStorage.setItem('selectedTabMatches', value)
@@ -84,9 +83,9 @@ export const MatchesPage = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead className='w-[100px]'>Название</TableHead>
-							<TableHead>Картинка</TableHead>
-							<TableHead>Method</TableHead>
+							<TableHead className='w-[100px]'>Id</TableHead>
+							<TableHead>Название</TableHead>
+							<TableHead>Картинки</TableHead>
 							<TableHead className='text-right'>Действия</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -120,6 +119,7 @@ export const MatchesPage = () => {
 							<TableHead>Статус</TableHead>
 							<TableHead>Информация</TableHead>
 							<TableHead>Команды</TableHead>
+							<TableHead>Завершить</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -162,6 +162,11 @@ export const MatchesPage = () => {
 										Команда 1 - {event.teams[0].team.name} <br />
 										Команда 2 - {event.teams[1].team.name}{' '}
 									</div>
+								</TableCell>
+								<TableCell>
+									{event.status && (
+										<EndMatch teams={event.teams} event_id={event.id} />
+									)}
 								</TableCell>
 							</TableRow>
 						))}

@@ -1,29 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { categoryService } from '../service/categoryService'
-import { AxiosError } from 'axios'
+import { skinService } from '../service/skinService'
 import { toast } from 'sonner'
+import { AxiosError } from 'axios'
 
-export const useGetCategories = () => {
+export const useGetSkins = (params: GetSkinsParams) => {
 	return useQuery({
-		queryKey: ['categories'],
-		queryFn: () => categoryService.getCategories()
+		queryKey: ['skins', params],
+		queryFn: () => skinService.getAll(params)
 	})
 }
 
-export const useEditCategory = () => {
+export const useCreateSkin = () => {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationFn: (data: {
-			id: number
-			name: string
-			price_one: number
-			price_two: number
-			price_three: number
-			price_four: number
-		}) => categoryService.editCategory(data),
+		mutationFn: (data: SkinCreateData) => skinService.create(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['categories'] })
+			toast.success('Скин успешно создан')
+			queryClient.invalidateQueries({ queryKey: ['skins'] })
 		},
 		onError: error => {
 			const axiosError = error as AxiosError<{ detail: string }>
@@ -37,14 +30,13 @@ export const useEditCategory = () => {
 	})
 }
 
-export const useDeleteCategory = () => {
+export const useUpdateSkin = () => {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationFn: (params: { id: number }) =>
-			categoryService.deleteCategory(params),
+		mutationFn: (data: SkinUpdateData) => skinService.update(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['categories'] })
+			toast.success('Скин успешно обновлен')
+			queryClient.invalidateQueries({ queryKey: ['skins'] })
 		},
 		onError: error => {
 			const axiosError = error as AxiosError<{ detail: string }>
