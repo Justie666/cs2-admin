@@ -1,61 +1,90 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Button } from './ui/button'
 
-const LINKS: { title: string; href: string }[] = [
+const LINKS: { title: string; href: string; level: number }[] = [
 	{
-		href: '/main/admins',
-		title: 'Админы'
+		href: '/admin/main/DJLSJDLKASJDLKASJDNLKSAN:CLKASJXLKAJLK',
+		title: 'Админы',
+		level: 3
 	},
 	{
-		href: '/main/users',
-		title: 'Пользователи'
+		href: '/admin/main/SDAMA:XM"SA"K:JI)PURIQWJDKLSADSA',
+		title: 'Пользователи',
+		level: 3
 	},
 	{
-		href: '/main/matches',
-		title: 'Матчи'
+		href: '/admin/main/XKMSAIOUWQRYNZAXNJKASHDLKSAJDLJIORWQUO',
+		title: 'Матчи',
+		level: 1
 	},
 	{
-		href: '/main/skins',
-		title: 'Скины'
+		href: '/admin/main/XASUROIQJDSALKNXASKJD',
+		title: 'Выводы скинов',
+		level: 1
 	},
 	{
-		href: '/main/promo',
-		title: 'Промокоды'
+		href: '/admin/main/XMAOPISJOIEJROINASLKC:JALSKFJKLSA:JD:LK',
+		title: 'Скины',
+		level: 2
 	},
 	{
-		href: '/main/cases',
-		title: 'Кейсы'
+		href: '/admin/main/ZJOIWQREUWQHJDKNBSALKJXSAFLKJLHS',
+		title: 'Промокоды',
+		level: 2
 	},
 	{
-		href: '/main/statistics',
-		title: 'Статистика'
+		href: '/admin/main/MXASKOJDIOJQIORJKSDNACXNZMC',
+		title: 'Кейсы',
+		level: 3
+	},
+	{
+		href: '/admin/main/ASKRWQPOKDSAM',
+		title: 'Api key и Wallet',
+		level: 3
+	},
+	{
+		href: '/admin/main/CXZSDFADS',
+		title: 'Статистика',
+		level: 3
 	}
 ]
 
 export const Nav = () => {
+	const navigate = useNavigate()
 	const { pathname } = useLocation()
 
 	const isActive = (href: string) => {
 		return pathname.includes(href)
 	}
+	const level = +localStorage.getItem('level')!
+
+	const handleLogout = () => {
+		localStorage.clear()
+		navigate('/')
+	}
 
 	return (
-		<div className='p-5'>
-			<div>
-				<div>logo</div>
-				<div>Сделано в mirry-code</div>
-			</div>
+		<div className='p-5 min-w-[200px]'>
 			<div className='flex flex-col gap-2 mt-5'>
-				{LINKS.map(link => (
-					<Button
-						key={link.href}
-						size={'sm'}
-						variant={isActive(link.href) ? 'default' : 'outline'}
-						className='justify-start'
-						asChild>
-						<Link to={link.href}>{link.title}</Link>
-					</Button>
-				))}
+				{LINKS.map(
+					link =>
+						level >= link.level && (
+							<Button
+								key={link.href}
+								size={'sm'}
+								variant={isActive(link.href) ? 'default' : 'outline'}
+								className='justify-start'
+								asChild>
+								<Link to={link.href}>{link.title}</Link>
+							</Button>
+						)
+				)}
+				<Button
+					variant={'destructive'}
+					className='mt-5'
+					onClick={() => handleLogout()}>
+					Выйти
+				</Button>
 			</div>
 		</div>
 	)

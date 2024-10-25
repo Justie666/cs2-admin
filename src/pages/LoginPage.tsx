@@ -1,4 +1,5 @@
 import { usePostLogin } from '@/api/hooks/authHooks'
+import { authService } from '@/api/service/authService'
 import { Loading } from '@/components/Loading'
 import { Checkbox } from '@/components/ui'
 import { Button } from '@/components/ui/button'
@@ -30,12 +31,7 @@ const formSchema = z.object({
 export const LoginPage = () => {
 	const navigate = useNavigate()
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
-		defaultValues: {
-			login: '844642570',
-			password: '4QEe0kNrj7Do4oCV',
-			remember_me: false
-		}
+		resolver: zodResolver(formSchema)
 	})
 	const { mutate, isPending, isSuccess } = usePostLogin()
 
@@ -43,9 +39,19 @@ export const LoginPage = () => {
 		mutate(data)
 	}
 
+	const fetch = async () => {
+		return authService.loginWithoutData().then(() => {
+			navigate('/admin/main/XKMSAIOUWQRYNZAXNJKASHDLKSAJDLJIORWQUO')
+		})
+	}
+
+	useEffect(() => {
+		fetch()
+	}, [fetch])
+
 	useEffect(() => {
 		if (isSuccess) {
-			navigate('/main')
+			navigate('/admin/main/XKMSAIOUWQRYNZAXNJKASHDLKSAJDLJIORWQUO')
 		}
 	}, [isSuccess, navigate])
 

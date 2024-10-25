@@ -11,17 +11,31 @@ import {
 	AccordionTrigger,
 	AccordionContent
 } from '../ui'
+import { useState, useEffect } from 'react'
 
 export const UserModal = ({ id }: { id: number }) => {
-	const { data: user, isLoading, error } = useGetFullInfo({ user_id: id })
+	const [isOpen, setIsOpen] = useState(false)
+	const {
+		data: user,
+		isLoading,
+		error,
+		refetch
+	} = useGetFullInfo({ user_id: id })
+
+	// Fetch user data when the modal opens
+	useEffect(() => {
+		if (isOpen) {
+			refetch()
+		}
+	}, [isOpen, refetch])
 
 	if (isLoading) return <p>Загрузка...</p>
 	if (error) return <p>Ошибка при загрузке информации о пользователе</p>
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger>
-				<Button>Подробнее</Button>
+				<Button variant={'outline'}>Подробнее</Button>
 			</DialogTrigger>
 			<DialogContent className='dialog-content'>
 				{/* Применяем класс для стилей */}

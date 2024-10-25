@@ -280,6 +280,7 @@ interface IStatistics {
 type IUsersStat = {
 	id: string
 	name: string
+	banned: boolean
 	username: string
 	referrer_id: string
 	time_zone: number
@@ -431,4 +432,21 @@ interface IFullInfo {
 	moneys: IMoneys1[]
 	receiving_skin: IReceivingSkin1[]
 	referrals: IReferrals1[]
+}
+
+interface IAdmin {
+	id: number
+	level: number
+}
+
+interface DeleteAdminParams {
+	user_id: number
+}
+
+interface ReceivingSkin {
+	id: number
+	user_id: number
+	skin_id: number
+	status: string
+	created_at: string
 }

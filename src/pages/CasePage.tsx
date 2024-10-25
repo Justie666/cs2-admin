@@ -15,7 +15,11 @@ import {
 	TableCell,
 	TableBody,
 	Button,
-	Input
+	Input,
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger
 } from '@/components/ui'
 import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
@@ -98,36 +102,46 @@ export const CasePage = () => {
 								/>
 							</TableCell>
 							<TableCell>
-								{caseItem.skins.map(skin => (
-									<div key={skin.id} className='flex gap-2 items-center'>
-										<img
-											src={skin.skin.image_url}
-											className='size-[40px] object-cover'
-											alt=''
-										/>
-										<div className='flex gap-2 items-center'>
-											{skin.skin.id} -{skin.skin.name} ({skin.skin.quality}) - (
-											{skin.skin.rarity}) -{' '}
-											<Input
-												defaultValue={skin.chance}
-												className='w-[70px]'
-												onBlur={e =>
-													handleChangeSkin({
-														id: skin.id,
-														chance: Number(e.target.value) // Обновляем шанс сразу
-													})
-												}
-											/>
-										</div>
-
-										<Button
-											size={'icon'}
-											variant={'outline'}
-											onClick={() => handleRemoveSkin(skin.id)}>
-											<Trash2 />
-										</Button>
-									</div>
-								))}
+								<Accordion type='single' collapsible>
+									<AccordionItem value='skins'>
+										<AccordionTrigger>
+											<span>Скины</span>
+										</AccordionTrigger>
+										<AccordionContent>
+											{caseItem.skins.map(skin => (
+												<div
+													key={skin.id}
+													className='flex gap-2 items-center mb-2'>
+													<img
+														src={skin.skin.image_url}
+														className='w-[40px] h-[40px] object-cover'
+														alt={skin.skin.name}
+													/>
+													<span>
+														{skin.skin.name} ({skin.skin.quality}) -{' '}
+														{skin.skin.rarity}
+													</span>
+													<Input
+														defaultValue={skin.chance}
+														className='w-[70px]'
+														onBlur={e =>
+															handleChangeSkin({
+																id: skin.id,
+																chance: Number(e.target.value) // Обновляем шанс сразу
+															})
+														}
+													/>
+													<Button
+														size={'icon'}
+														variant={'outline'}
+														onClick={() => handleRemoveSkin(skin.id)}>
+														<Trash2 />
+													</Button>
+												</div>
+											))}
+										</AccordionContent>
+									</AccordionItem>
+								</Accordion>
 								<AddSkin case_id={caseItem.id} />
 							</TableCell>
 							<TableCell>

@@ -23,24 +23,9 @@ import {
 	TabsList,
 	TabsTrigger
 } from '@/components/ui'
-import { QUALITY, RARITY } from '@/const'
+import { RARITY } from '@/const'
 import { useIntersectionObserver } from '@siberiacancode/reactuse'
 import { useEffect, useState } from 'react'
-
-function findGunNameById(guns: Gun[], id: number): string {
-	for (const gun of guns) {
-		if (gun.id === id) {
-			return gun.name
-		}
-		if (gun.children.length > 0) {
-			const childName = findGunNameById(gun.children, id)
-			if (childName) {
-				return childName
-			}
-		}
-	}
-	return '' // Если оружие не найдено
-}
 
 const QUALITY2: { value: string | null; title: string }[] = [
 	{ value: 'null', title: 'Качество' },
@@ -239,8 +224,11 @@ export const SkinsPage = () => {
 							<TableHead>Id</TableHead>
 							<TableHead>Название</TableHead>
 							<TableHead>Картинка</TableHead>
-							<TableHead>Информация</TableHead>
-							<TableHead className='text-right'>Amount</TableHead>
+							<TableHead>Цена</TableHead>
+							<TableHead>Качество</TableHead>
+							<TableHead>Редкость</TableHead>
+							<TableHead>Активен</TableHead>
+							<TableHead className='text-right'>Действия</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -252,25 +240,16 @@ export const SkinsPage = () => {
 									<img
 										src={skin.image_url}
 										alt=''
-										className='h-[200px] object-cover'
+										className='h-[100px] object-cover'
 									/>
 								</TableCell>
+								<TableCell>{skin.price} $</TableCell>
+								<TableCell>{skin.quality}</TableCell>
 								<TableCell>
-									<div>Цена - {skin.price} $</div>
-									<div>
-										Качество -{' '}
-										{QUALITY.find(q => q.key === skin.quality)?.value}
-									</div>
-									<div>
-										{' '}
-										Редкость - {RARITY.find(q => q.key === skin.rarity)?.value}
-									</div>
-									<div>Активен - {skin.active ? 'Да' : 'Нет'}</div>
-									{guns && (
-										<div> Оружие - {findGunNameById(guns, skin.gun_id)}</div>
-									)}
+									{RARITY.find(q => q.key === skin.rarity)?.value}
 								</TableCell>
-								<TableCell>
+								<TableCell>{skin.active ? 'Да' : 'Нет'}</TableCell>
+								<TableCell className='text-right'>
 									<UpdateSkin skinData={skin} />
 								</TableCell>
 							</TableRow>

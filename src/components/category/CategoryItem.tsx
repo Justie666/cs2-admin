@@ -1,4 +1,4 @@
-import { CheckCircle, Circle, CircleX } from 'lucide-react'
+import { Circle } from 'lucide-react'
 import { CategoryEdit } from './CategoryEdit'
 
 export const CategoryItem = ({
@@ -6,7 +6,6 @@ export const CategoryItem = ({
 	active,
 	name,
 	children,
-	parent_id,
 	price
 }: Category) => {
 	return (

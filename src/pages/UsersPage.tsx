@@ -1,43 +1,49 @@
-import { useGetAllUsers } from '@/api/hooks/userHooks'
+import { useBanUser, useGetUsersInfinite } from '@/api/hooks/userHooks'
 import {
 	Table,
 	TableHeader,
 	TableRow,
 	TableHead,
 	TableBody,
+	Button,
 	TableCell
 } from '@/components/ui'
 import { UserModal } from '@/components/user/UserModal'
 import { useIntersectionObserver } from '@siberiacancode/reactuse'
-import {} from 'lucide-react'
-import { useEffect, useState } from 'react'
-
-const limit = 25
 
 export const UsersPage = () => {
-	const [offset, setOffset] = useState(0)
-	const [users, setUsers] = useState<IUsersStat[]>([])
-	const { data: usersQuery } = useGetAllUsers({
-		limit: 25,
-		offset: offset
-	})
-
-	useEffect(() => {
-		if (usersQuery) {
-			setUsers(prev => prev.concat(usersQuery))
-		}
-	}, [usersQuery])
+	const { mutate: ban } = useBanUser()
+	const { data: usersQuery, hasNextPage, fetchNextPage } = useGetUsersInfinite()
+	const users = usersQuery?.pages.flatMap(page => page) || []
 
 	const { ref: observerRef } = useIntersectionObserver<HTMLDivElement>({
 		threshold: 1,
 		onChange: entry => {
 			if (entry.isIntersecting) {
-				console.log(31321)
-
-				setOffset(prev => prev + limit)
+				fetchNextPage()
 			}
 		}
 	})
+
+	console.log(hasNextPage)
+
+	const toggleBan = (user_id: number, value: boolean) => {
+		if (value) {
+			const isConfirm = confirm(
+				'Вы действительно хотите заблокировать пользователя?'
+			)
+			if (isConfirm) {
+				ban({ user_id, value })
+			}
+		} else {
+			const isConfirm = confirm(
+				'Вы действительно хотите разблокировать пользователя?'
+			)
+			if (isConfirm) {
+				ban({ user_id, value })
+			}
+		}
+	}
 
 	return (
 		<div>
@@ -114,11 +120,18 @@ export const UsersPage = () => {
 
 							{/* Действия */}
 							<TableCell className='text-right'>
-								<UserModal id={+user.id} />
+								<div className='space-y-2'>
+									<UserModal id={+user.id} />
+									<Button
+										variant={'destructive'}
+										onClick={() => toggleBan(+user.id, !user.banned)}>
+										{user.banned ? 'Разблокировать' : 'Заблокировать'}
+									</Button>
+								</div>
 							</TableCell>
 						</TableRow>
 					))}
-					{usersQuery && usersQuery?.length > 1 && <div ref={observerRef} />}
+					{hasNextPage && <div ref={observerRef} />}
 				</TableBody>
 			</Table>
 		</div>

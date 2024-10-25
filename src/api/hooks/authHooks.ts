@@ -17,3 +17,18 @@ export const usePostLogin = () => {
 		}
 	})
 }
+
+export const usePostLoginWithoutData = () => {
+	return useMutation({
+		mutationFn: () => authService.loginWithoutData(),
+		onError: error => {
+			const axiosError = error as AxiosError<{ detail: string }>
+			// Проверяем, есть ли response и detail
+			if (axiosError.response && axiosError.response.data) {
+				toast.error(axiosError.response.data.detail || 'Произошла ошибка')
+			} else {
+				toast.error('Произошла ошибка')
+			}
+		}
+	})
+}
